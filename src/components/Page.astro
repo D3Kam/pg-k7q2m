@@ -1,0 +1,233 @@
+---
+import { Picture } from 'astro:assets';
+import { ArrowRight, ArrowDown, Check, Mail } from '@lucide/astro';
+import Layout from '../layouts/Layout.astro';
+import { company, dict, type Lang, type ServiceKey } from '../i18n';
+import heroImg from '../assets/hero.png';
+import skenavimasImg from '../assets/skenavimas.png';
+import leidybaImg from '../assets/leidyba.png';
+import maketavimasImg from '../assets/maketavimas.png';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = dict[lang];
+const base = import.meta.env.BASE_URL;
+const home = lang === 'lt' ? base : `${base}en/`;
+const mailto = `mailto:${company.email}?subject=${encodeURIComponent(t.contact.subject)}`;
+
+const serviceImages: Record<ServiceKey, ImageMetadata> = {
+  skenavimas: skenavimasImg,
+  leidyba: leidybaImg,
+  maketavimas: maketavimasImg,
+};
+const services = (Object.keys(serviceImages) as ServiceKey[]).map((key) => ({
+  key,
+  img: serviceImages[key],
+  ...t.services.items[key],
+}));
+
+const langs: { code: Lang; href: string }[] = [
+  { code: 'lt', href: base },
+  { code: 'en', href: `${base}en/` },
+];
+
+const btn =
+  'inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-[0.95rem] font-medium transition-colors';
+---
+
+<Layout lang={lang}>
+  <a
+    href="#main"
+    class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+    >{t.nav.skip}</a
+  >
+
+  <header class="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur">
+    <div class="container-page flex h-16 items-center justify-between gap-4">
+      <a href={home} class="text-lg font-semibold tracking-[0.18em]" aria-label={company.brand}>{company.brand}</a>
+
+      <nav aria-label="Main" class="hidden md:block">
+        <ul class="flex items-center gap-8 text-[0.95rem] text-muted-foreground">
+          <li><a class="hover:text-foreground" href="#services">{t.nav.services}</a></li>
+          <li><a class="hover:text-foreground" href="#process">{t.nav.process}</a></li>
+          <li><a class="hover:text-foreground" href="#contact">{t.nav.contact}</a></li>
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <ul class="flex items-center text-sm" aria-label={t.nav.langLabel}>
+          {
+            langs.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  hreflang={l.code}
+                  lang={l.code}
+                  aria-current={l.code === lang ? 'true' : undefined}
+                  class:list={[
+                    'inline-flex min-h-11 min-w-11 items-center justify-center rounded-full uppercase',
+                    l.code === lang ? 'font-semibold text-foreground' : 'text-muted-foreground hover:text-foreground',
+                  ]}
+                >
+                  {l.code}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a href="#contact" class:list={[btn, 'hidden bg-primary text-primary-foreground hover:bg-primary/85 sm:inline-flex']}>
+          {t.nav.cta}
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="container-page grid items-center gap-10 py-14 md:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-24">
+      <div>
+        <p class="text-sm font-medium tracking-wide text-accent">{t.hero.eyebrow}</p>
+        <h1 class="mt-4 text-[2.5rem] leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[3.75rem]">
+          {t.hero.title}
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground text-pretty">{t.hero.lead}</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#contact" class:list={[btn, 'bg-primary text-primary-foreground hover:bg-primary/85']}>
+            {t.hero.cta}
+            <ArrowRight size={18} aria-hidden="true" />
+          </a>
+          <a href="#services" class:list={[btn, 'border border-border bg-surface hover:bg-muted']}>
+            {t.hero.secondary}
+            <ArrowDown size={18} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+      <Picture
+        src={heroImg}
+        alt={t.hero.imageAlt}
+        formats={['avif', 'webp']}
+        widths={[640, 960, 1168]}
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="aspect-[4/3] w-full rounded-[var(--radius-card)] object-cover"
+      />
+    </section>
+
+    <!-- Problem → solution -->
+    <section class="border-y border-border bg-surface py-16 md:py-24" aria-labelledby="problems-title">
+      <div class="container-page">
+        <div class="max-w-2xl">
+          <h2 id="problems-title" class="text-3xl font-semibold tracking-tight text-balance md:text-4xl">{t.problems.title}</h2>
+          <p class="mt-4 text-lg text-muted-foreground">{t.problems.lead}</p>
+        </div>
+        <ol class="mt-12 grid gap-4 md:grid-cols-3">
+          {
+            t.problems.items.map((item) => (
+              <li class="flex flex-col rounded-[var(--radius-card)] border border-border bg-background p-6">
+                <p class="text-xs font-medium tracking-wider text-muted-foreground uppercase">{t.problems.problemLabel}</p>
+                <p class="mt-2 leading-relaxed text-muted-foreground">{item.problem}</p>
+                <div class="my-5 h-px bg-border" aria-hidden="true" />
+                <p class="text-xs font-medium tracking-wider text-accent uppercase">{t.problems.solutionLabel}</p>
+                <p class="mt-2 text-[1.05rem] leading-relaxed font-medium">{item.solution}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="scroll-mt-16 py-16 md:py-24" aria-labelledby="services-title">
+      <div class="container-page">
+        <div class="max-w-2xl">
+          <h2 id="services-title" class="text-3xl font-semibold tracking-tight md:text-4xl">{t.services.title}</h2>
+          <p class="mt-4 text-lg text-muted-foreground">{t.services.lead}</p>
+        </div>
+        <div class="mt-12 grid gap-6 md:grid-cols-3">
+          {
+            services.map((s) => (
+              <article class="flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface">
+                <Picture
+                  src={s.img}
+                  alt={s.imageAlt}
+                  formats={['avif', 'webp']}
+                  widths={[480, 720]}
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  class="aspect-[4/3] w-full object-cover"
+                />
+                <div class="flex flex-1 flex-col p-6">
+                  <h3 class="text-xl font-semibold tracking-tight">{s.title}</h3>
+                  <p class="mt-2 leading-relaxed text-muted-foreground">{s.text}</p>
+                  <ul class="mt-5 space-y-2.5">
+                    {s.points.map((p) => (
+                      <li class="flex gap-2.5 text-[0.95rem]">
+                        <Check size={18} class="mt-0.5 shrink-0 text-accent" aria-hidden="true" />
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section id="process" class="scroll-mt-16 border-t border-border py-16 md:py-24" aria-labelledby="process-title">
+      <div class="container-page grid gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16">
+        <div>
+          <h2 id="process-title" class="text-3xl font-semibold tracking-tight md:text-4xl">{t.process.title}</h2>
+          <p class="mt-4 text-lg text-muted-foreground">{t.process.lead}</p>
+        </div>
+        <ol class="grid gap-8 sm:grid-cols-3">
+          {
+            t.process.steps.map((step, i) => (
+              <li class="border-t-2 border-foreground pt-5">
+                <span class="text-sm font-semibold text-accent tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="mt-2 text-lg font-semibold">{step.title}</h3>
+                <p class="mt-2 leading-relaxed text-muted-foreground">{step.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="scroll-mt-16 pb-16 md:pb-24" aria-labelledby="contact-title">
+      <div class="container-page">
+        <div class="rounded-[calc(var(--radius-card)*1.5)] bg-primary px-6 py-14 text-primary-foreground md:px-14 md:py-20">
+          <h2 id="contact-title" class="text-3xl font-semibold tracking-tight md:text-5xl">{t.contact.title}</h2>
+          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-primary-foreground/75">{t.contact.lead}</p>
+          <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href={mailto} class:list={[btn, 'bg-primary-foreground text-primary hover:bg-primary-foreground/85']}>
+              <Mail size={18} aria-hidden="true" />
+              {t.contact.cta}
+            </a>
+            <a href={`mailto:${company.email}`} class="text-primary-foreground/80 underline underline-offset-4 hover:text-primary-foreground">
+              <span class="sr-only">{t.contact.emailLabel}: </span>{company.email}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-border py-10 text-sm text-muted-foreground">
+    <div class="container-page flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <address class="not-italic leading-relaxed">
+        <span class="font-semibold text-foreground">{company.name}</span><br />
+        {t.footer.codeLabel}: {company.code}<br />
+        {company.street}, {company.city}<br />
+        <a class="hover:text-foreground" href={`mailto:${company.email}`}>{company.email}</a>
+      </address>
+      <p>© {new Date().getFullYear()} {company.name}. {t.footer.rights}</p>
+    </div>
+  </footer>
+</Layout>

@@ -1,0 +1,75 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import heroImg from '../assets/hero.png';
+import { company, dict, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = dict[lang];
+const base = import.meta.env.BASE_URL;
+const site = Astro.site!;
+
+const ltUrl = new URL(base, site).href;
+const enUrl = new URL(`${base}en/`, site).href;
+const canonical = lang === 'lt' ? ltUrl : enUrl;
+
+const og = await getImage({ src: heroImg, width: 1200, format: 'jpg' });
+const ogUrl = new URL(og.src, site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: company.name,
+  alternateName: company.brand,
+  url: ltUrl,
+  email: company.email,
+  image: ogUrl,
+  identifier: company.code,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: company.street,
+    addressLocality: company.city,
+    addressCountry: company.country,
+  },
+  areaServed: 'LT',
+  priceRange: lang === 'lt' ? 'Pagal užklausą' : 'On request',
+};
+---
+
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="lt" href={ltUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={ltUrl} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="sitemap" href={`${base}sitemap-index.xml`} />
+    <meta name="theme-color" content="#f6f5f2" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={company.brand} />
+    <meta property="og:locale" content={t.ogLocale} />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.meta.title} />
+    <meta name="twitter:description" content={t.meta.description} />
+    <meta name="twitter:image" content={ogUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
