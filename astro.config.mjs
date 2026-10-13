@@ -4,10 +4,9 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
-// Kol duai.lt DNS nenukreiptas – svetainė veikia per GitHub Pages adresą su `base`.
-// Prijungus domeną: SITE = 'https://www.duai.lt', BASE = '/', ir sukurti public/CNAME.
-const SITE = 'https://d3kam.github.io';
-const BASE = '/pg-k7q2m';
+// Svetainė veikia per prijungtą domeną www.duai.lt (public/CNAME).
+const SITE = 'https://www.duai.lt';
+const BASE = '/';
 
 // https://astro.build/config
 export default defineConfig({
