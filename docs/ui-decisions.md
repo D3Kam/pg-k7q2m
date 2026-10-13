@@ -19,3 +19,9 @@
 - Lighthouse 12 mobile, `astro preview` (production build): Performance 98, Accessibility 100, Best Practices 100, SEO 100; LCP 1.9 s, CLS 0, TBT 0 ms.
 - Horizontalus scroll 375 px pločiu: nėra (`scrollWidth` 375 = `innerWidth`, Claude Browser).
 - JSON-LD Google Rich Results Test: NOT MEASURED.
+
+## 2026-10-13 — serverių priežiūra + telefonas
+
+- Pridėta papildoma paslauga „Serverių priežiūra“ kaip atskira juosta prieš kontaktų bloką (be nuotraukos, Lucide `Server` ikona), kad neužgožtų 3 pagrindinių paslaugų. Tekstą („atnaujinimai, atsarginės kopijos ir stebėsena“) parašė Claude – klientas turi patvirtinti.
+- Telefonas +370 626 68769: `tel:` mygtukas kontaktų bloke, poraštėje, `telephone` LocalBusiness JSON-LD.
+- Patikra: horizontalaus scroll nėra 375 px (Claude Browser, `scrollWidth` 375 = `innerWidth`); desktop vaizdas – headless Chrome screenshot.

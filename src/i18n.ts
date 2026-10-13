@@ -6,6 +6,8 @@ export const company = {
   city: 'Kaunas',
   country: 'LT',
   email: 'duaiaub@gmail.com',
+  phone: '+37062668769',
+  phoneDisplay: '+370 626 68769',
 } as const;
 
 export type Lang = 'lt' | 'en';
@@ -96,12 +98,19 @@ const lt = {
       { title: 'Gaukite rezultatą', text: 'Atliekame darbą ir perduodame jums paruoštus failus arba leidinius.' },
     ],
   },
+  extra: {
+    eyebrow: 'Taip pat',
+    title: 'Serverių priežiūra',
+    text: 'Prižiūrime serverius, kad jūsų svetainės ir sistemos veiktų be trikdžių: atnaujinimai, atsarginės kopijos ir stebėsena.',
+    cta: 'Teirautis',
+  },
   contact: {
     title: 'Kaina – pagal užklausą',
-    lead: 'Kiekvienas darbas skirtingas, todėl kainą pateikiame įvertinę jūsų poreikius. Parašykite – atsakysime su pasiūlymu.',
+    lead: 'Kiekvienas darbas skirtingas, todėl kainą pateikiame įvertinę jūsų poreikius. Parašykite ar paskambinkite – atsakysime su pasiūlymu.',
     cta: 'Parašyti el. laišką',
     subject: 'Užklausa iš duai.lt',
     emailLabel: 'El. paštas',
+    phoneLabel: 'Telefonas',
   },
   footer: { codeLabel: 'Įmonės kodas', rights: 'Visos teisės saugomos.' },
 };
@@ -193,12 +202,19 @@ const en: Dict = {
       { title: 'Get the result', text: 'We do the work and deliver ready files or printed copies.' },
     ],
   },
+  extra: {
+    eyebrow: 'Also',
+    title: 'Server maintenance',
+    text: 'We look after your servers so your websites and systems run smoothly: updates, backups and monitoring.',
+    cta: 'Ask us',
+  },
   contact: {
     title: 'Price on request',
-    lead: 'Every job is different, so we quote after understanding your needs. Write to us and we’ll reply with an offer.',
+    lead: 'Every job is different, so we quote after understanding your needs. Write or call us and we’ll reply with an offer.',
     cta: 'Send an email',
     subject: 'Enquiry from duai.lt',
     emailLabel: 'Email',
+    phoneLabel: 'Phone',
   },
   footer: { codeLabel: 'Company code', rights: 'All rights reserved.' },
 };

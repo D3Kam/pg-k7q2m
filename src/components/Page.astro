@@ -1,6 +1,6 @@
 ---
 import { Picture } from 'astro:assets';
-import { ArrowRight, ArrowDown, Check, Mail } from '@lucide/astro';
+import { ArrowRight, ArrowDown, Check, Mail, Phone, Server } from '@lucide/astro';
 import Layout from '../layouts/Layout.astro';
 import { company, dict, type Lang, type ServiceKey } from '../i18n';
 import heroImg from '../assets/hero.png';
@@ -16,6 +16,7 @@ const { lang } = Astro.props;
 const t = dict[lang];
 const base = import.meta.env.BASE_URL;
 const home = lang === 'lt' ? base : `${base}en/`;
+const tel = `tel:${company.phone}`;
 const mailto = `mailto:${company.email}?subject=${encodeURIComponent(t.contact.subject)}`;
 
 const serviceImages: Record<ServiceKey, ImageMetadata> = {
@@ -199,6 +200,28 @@ const btn =
       </div>
     </section>
 
+    <!-- Extra service -->
+    <section class="pb-16 md:pb-24" aria-labelledby="extra-title">
+      <div class="container-page">
+        <div class="flex flex-col gap-6 rounded-[var(--radius-card)] border border-border bg-surface p-6 md:flex-row md:items-center md:justify-between md:p-8">
+          <div class="flex gap-5">
+            <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-muted" aria-hidden="true">
+              <Server size={22} />
+            </span>
+            <div>
+              <p class="text-xs font-medium tracking-wider text-accent uppercase">{t.extra.eyebrow}</p>
+              <h2 id="extra-title" class="mt-1 text-xl font-semibold tracking-tight">{t.extra.title}</h2>
+              <p class="mt-2 max-w-2xl leading-relaxed text-muted-foreground">{t.extra.text}</p>
+            </div>
+          </div>
+          <a href="#contact" class:list={[btn, 'shrink-0 self-start border border-border bg-background hover:bg-muted md:self-auto']}>
+            {t.extra.cta}
+            <ArrowRight size={18} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- Contact -->
     <section id="contact" class="scroll-mt-16 pb-16 md:pb-24" aria-labelledby="contact-title">
       <div class="container-page">
@@ -209,6 +232,10 @@ const btn =
             <a href={mailto} class:list={[btn, 'bg-primary-foreground text-primary hover:bg-primary-foreground/85']}>
               <Mail size={18} aria-hidden="true" />
               {t.contact.cta}
+            </a>
+            <a href={tel} class:list={[btn, 'border border-primary-foreground/30 hover:bg-primary-foreground/10']}>
+              <Phone size={18} aria-hidden="true" />
+              <span class="sr-only">{t.contact.phoneLabel}: </span>{company.phoneDisplay}
             </a>
             <a href={`mailto:${company.email}`} class="text-primary-foreground/80 underline underline-offset-4 hover:text-primary-foreground">
               <span class="sr-only">{t.contact.emailLabel}: </span>{company.email}
@@ -225,6 +252,7 @@ const btn =
         <span class="font-semibold text-foreground">{company.name}</span><br />
         {t.footer.codeLabel}: {company.code}<br />
         {company.street}, {company.city}<br />
+        <a class="hover:text-foreground" href={tel}>{company.phoneDisplay}</a><br />
         <a class="hover:text-foreground" href={`mailto:${company.email}`}>{company.email}</a>
       </address>
       <p>© {new Date().getFullYear()} {company.name}. {t.footer.rights}</p>
