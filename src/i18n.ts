@@ -5,7 +5,7 @@ export const company = {
   street: 'A. Juozapavičiaus pr. 122',
   city: 'Kaunas',
   country: 'LT',
-  email: 'duaiaub@gmail.com',
+  email: 'duaiuab@gmail.com',
   phone: '+37062668769',
   phoneDisplay: '+370 626 68769',
 } as const;

@@ -10,7 +10,7 @@
 - Languages: LT (pagrindinė, `/`), EN (`/en/`)
 - Visual references the client likes (URLs) — reference only: dokdata.lt (modernumas, paprastumas), printeja.eu
 - Things the client dislikes: TODO(ask)
-- Contact: duaiaub@gmail.com (mailto), +370 626 68769 (tel:). Jokių vardų ir pavardžių.
+- Contact: duaiuab@gmail.com (mailto), +370 626 68769 (tel:). Jokių vardų ir pavardžių.
 - Rekvizitai: Duai, UAB · įm. k. 306968206 · A. Juozapavičiaus pr. 122, Kaunas
 
 ## Color tokens (light only)
